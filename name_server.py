@@ -2,7 +2,8 @@
 import sys
 import argparse
 import asyncio
-from mobnet import Nameservice, Network
+import Network
+import Nameservice
 
 try:
     import signal
