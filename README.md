@@ -11,7 +11,7 @@ use the -port #### -length # -encode (option) as arguments
 2.-encode (type) JSON or bytes
 
 ###2. Create Nodes in your code.
-tnode = miniOJN.Node(server_ip_str, port_number)
+tnode = mobnet.Node(server_ip_str, port_number)
 ###3. Subscribe to topics
 tnode.subscribe("generic topic name")
 ###4. Use the Nodes to read from topics and publish to them
@@ -24,6 +24,9 @@ tnode.status()
 
 #### read the items
 topic, info = tnode.read()
+
+### set a callback function for a topic
+tnode.callback("generic topic name", func_ptr, arg1, arg2... kwarg1, kwarg2...)
 
 ### At the moment
 
@@ -39,7 +42,7 @@ The Nodes are anonymous (they don't have verified names)
 
 Nodes will receive things they publish if they are subscribed to them.
 
-There is no encryption (yet), It hurts being able to port miniOJN to other languages. (but will be added as an option)
+There is no encryption (yet), It hurts being able to port mobnet to other languages. (but will be added as an option)
 
 ####the packets are easy to decode for other languages, mostly.
 

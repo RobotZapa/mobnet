@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 setuptools.setup(
      name='mobnet',
-     version='1.0',
+     version='1.0.1',
      scripts=['name_server.py', 'server.py'],
      author="Michael Elliott",
      author_email="robotzapa@gmail.com",

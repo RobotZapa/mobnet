@@ -15,11 +15,12 @@ class Node:
         self.lenfield = length_field
         self.socket_name = None
         self.running = True
+        self._callbacks = {}
 
         self._setup()
         #           start the receiver thread
-        receiver = threading.Thread(target=self._listener_thread)
-        receiver.start()
+        self.receiver = threading.Thread(target=self._listener_thread)
+        self.receiver.start()
 
     def _setup(self):
         for res in socket.getaddrinfo(self.host, self.port, socket.AF_UNSPEC, socket.SOCK_STREAM):
@@ -64,8 +65,30 @@ class Node:
     def _receiver_handle(self, data):
         topic, data = decode(data, self.encoding)
         self.queue[topic].append(data)
+        if self._callbacks[topic]:
+            for call in self._callbacks[topic]:
+                func, args, kwargs = call
+                func(*args, **kwargs)
+
+    def callback(self, topic, function, *args, **kwargs):
+        '''
+        Set a callback function for when a specific topic receives a new message
+        Function must be non-blocking
+        :param topic: the name of the topic
+        :param function: the function pointer to be called
+        :param args: arguments to the function
+        :param kwargs: keyword arguments to the function
+        :return: None
+        '''
+        if topic not in self._callbacks:
+            self._callbacks[topic] = []
+        self._callbacks[topic].append((function, args, kwargs))
 
     def terminate(self):
+        '''
+        Closes the connection and kills the listening thread
+        :return:
+        '''
         self.conn.close()
         self.working = False
 

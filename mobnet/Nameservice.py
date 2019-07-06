@@ -1,9 +1,9 @@
 import time
 
 try:
-    import Network as Network
+    from mobnet import Network as Network, Network
 except ImportError:
-    import Network
+    pass
 
 # The port that name service uses.
 port = 20803
